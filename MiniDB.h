@@ -14,7 +14,7 @@
 template<typename Type>
 class MiniDB {
 
-public:  //TODO: make public
+public:  //TODO: make private
     std::list<Type> db_store;
     typename std::list<Type>::iterator currPos;
 
@@ -49,8 +49,17 @@ size_t MiniDB<Type>::size() const {
 template<typename Type>
 void MiniDB<Type>::insert(const Type &item) {
 
-    db_store.insert(currPos, item);
-    currPos++;
+//    currPos++;
+//    if(this->size() == 0)
+//        db_store.insert(currPos++, item);
+//    else
+        db_store.insert(currPos, item);
+        currPos--;
+//
+//    for(typename std::list<Type>::iterator a {db_store.begin()}; a != db_store.end(); a++) {
+//        std::cout<< *a << std::endl;
+//    }
+//    std::cout<< std::endl;
 }
 
 template<typename Type>
@@ -92,6 +101,8 @@ Type MiniDB<Type>::remove() {
 
         throw std::logic_error("DB empty");
     }
+
+    return *currPos;
 }
 
 template<typename Type>
@@ -99,7 +110,7 @@ void MiniDB<Type>::moveToFirst() {
 
     if(db_store.size() != 0) {
 
-        currPos = db_store.front();
+        currPos = db_store.begin();
 
     } else {
 
@@ -124,14 +135,33 @@ void MiniDB<Type>::moveToLast() {
 template<typename Type>
 size_t MiniDB<Type>::getCurrentIndex() const {
 
+    int index = 0;
+
+    typename std::list<Type>::const_iterator begin{db_store.begin()};
+
     if(db_store.size() != 0) {
 
-        return distance(db_store.front(), currPos);
+        while (begin != currPos) {
 
+            index++;
+            begin++;
+        }
     } else {
 
         throw std::logic_error("DB empty");
     }
+
+
+    return index;
+
+////    if(db_store.size() != 0) {
+////
+////        return distance(begin, currPos);
+//
+//    } else {
+//
+//        throw std::logic_error("DB empty");
+//    }
 }
 
 template<typename Type>
@@ -140,7 +170,7 @@ void MiniDB<Type>::moveToIndex(size_t index) {
     if(db_store.size() != 0) {
 
         currPos = db_store.begin();
-        currPos += index;
+        std::advance(currPos, index -1);//To account for 0-based numbering
 
     } else {
 
@@ -151,7 +181,15 @@ void MiniDB<Type>::moveToIndex(size_t index) {
 template<typename Type>
 const Type& MiniDB<Type>::getValue() const {
 
-    return *currPos;
+    if(db_store.size() != 0) {
+
+        //std::cout << "returning value" << std::endl << *currPos << std::endl;
+        return *currPos;
+
+    } else {
+
+        throw std::logic_error("DB empty");
+    }
 }
 
 #endif //COMP5421_ADVANCED_PROGRAMMING_ASSIGNMENT_3_MINIDB_H

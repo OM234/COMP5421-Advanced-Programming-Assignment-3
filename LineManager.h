@@ -10,7 +10,10 @@
 
 
 #include <cstddef>
+#include <iostream>
+#include <fstream>
 #include "Menu.h"
+#include "MiniDB.h"
 
 class LineManager {
 
@@ -19,8 +22,21 @@ private:
     std::size_t lower_span;
     Menu partialMenu;
     Menu fullMenu;
-
+    MiniDB<std::string> miniDB;
+    bool changeSinceWrite;
     void makeMenus();
+    void opt1AppKeyB();
+    void opt2InpKeyB();
+    void opt3AppTextF();
+    void opt4InpTextF();
+    void opt5PrintCurrLine();
+    void opt6PrintSpan();
+    void opt7SetSpans();
+    void opt8PrintAll();
+    void opt9ToLine();
+    void opt10DeleteLine();
+    void opt11WriteToFile();
+    void opt12Quit();
 
 public:
     LineManager(std::size_t upper_span = 2, std::size_t lower_span = 2);

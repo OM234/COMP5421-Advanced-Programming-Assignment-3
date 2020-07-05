@@ -6,13 +6,12 @@
 */
 
 #include "LineManager.h"
-#include "MiniDB.h" //TODO: Remove
 
 int main() {
 
-    LineManager lm;
-    MiniDB<std::string> db;
 
+    LineManager lm;
+    lm.run();
 
     return 0;
 }
