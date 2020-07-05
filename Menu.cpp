@@ -14,54 +14,32 @@ using namespace std;
 Menu::Menu() {}                                                 //default constructor
 
 
-const std::string Menu::toString() const {
+const std::string Menu::toString() const {                      // used to help implement << override
 
-    std::string returnString{};                                 //return string
+    std::string returnString{};                                 // return string
 
-    returnString.append(this->top_message);                     //appends the top message
+    returnString.append(this->top_message);                     // appends the top message
 
-        for (int i = 0; i < option_list.size(); i++) {          //appends the options
+    for (int i = 0; i < option_list.size(); i++) {              // appends the options
 
         returnString.append("\n");
         returnString.append("\t");
-        returnString.append(std::to_string(i + 1));     //to convert option number to cstring
+        returnString.append(std::to_string(i + 1));
         returnString.append(". ");
         returnString.append(this->option_list[i]);
     }
 
     returnString.append("\n");
-    returnString.append(this->bottom_message);                  //appends bottom message
+    returnString.append(this->bottom_message);                  // appends bottom message
     returnString.append("\n");
 
     return returnString;
 }
 
-void Menu::push_back(const std::string& str) {
+void Menu::push_back(const std::string& str) {                  // push to back of menu
 
     option_list.push_back(str);
 }
-
-//void Menu::read_option_number() { //for reading user input
-//
-//    cout << *this;  //display menu
-//
-//    int choice{};
-//    cin >> choice;  //get choice
-//
-//    if (this->count == 0) { //if no options, accept any integer
-//        cout << "you entered: " << choice << endl;
-//        return;
-//    }
-//
-//    while (choice < 1 || choice > this->count) { //if choice is less than 1, or more than count, invalid
-//        cout << "invalid choice " << choice << ". It must be in the range"
-//             << "[1, " << this->count << "]" << endl;
-//        cout << *this;
-//        cin >> choice;
-//    }
-//
-//    cout << "you entered: " << choice << endl;
-//}
 
 void Menu::set_top_message(const std::string &topMsg) {
 

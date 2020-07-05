@@ -11,17 +11,19 @@
 #include <string>
 #include <vector>
 
-class Menu {
-
+class Menu {                                        // Menu class for displaying menu. Similar to Ass. 1 but with less
+                                                    // functionality. Uses std::string rather Text. Uses vector<> rather
+                                                    // than Text*
 private:
 
-    std::vector<std::string> option_list;
+    std::vector<std::string> option_list;           // The numbered options in the menu
     std::string top_message;
     std::string bottom_message;
 
 public:
 
-    Menu();
+    Menu();                                         // same functionality as assignment 1, just different data types/
+                                                    // structures. Reading user input is moved from Menu to LineManager run()
     void insert(int, const std::string&);
     void remove(int);
     void pop_back();

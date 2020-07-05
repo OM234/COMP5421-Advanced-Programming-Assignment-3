@@ -9,7 +9,6 @@
 
 int main() {
 
-
     LineManager lm;
     lm.run();
 

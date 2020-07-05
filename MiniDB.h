@@ -11,31 +11,31 @@
 #include <list>
 #include <stdexcept>
 
-template<typename Type>
-class MiniDB {
+template<typename Type>                                 // template class
+class MiniDB {                                          // DB for storing Type values
 
-public:  //TODO: make private
-    std::list<Type> db_store;
-    typename std::list<Type>::iterator currPos;
+private:
+
+    std::list<Type> db_store;                           // uses c++ list data structure
+    typename std::list<Type>::iterator currPos;         // uses iterator to determine current position in list
 
 public:
-    MiniDB();
-    size_t size() const;
-    void insert(const Type&);
-    void append(const Type&);
-    void prev();
-    void next();
-    Type remove();
-    void moveToFirst();
-    void moveToLast();
-    size_t getCurrentIndex() const;
-    void moveToIndex(size_t index);
-    const Type& getValue() const;
-
+    MiniDB();                                           // constructor
+    size_t size() const;                                // number of values in list
+    void insert(const Type&);                           // insert at iterator
+    void append(const Type&);                           // insert at back of list
+    void prev();                                        // iterator moves 1 position to the left
+    void next();                                        // iterator moves 1 position to the right
+    Type remove();                                      // remove value at iterator
+    void moveToFirst();                                 // moves iterator to front of list
+    void moveToLast();                                  // moves iterator to end of list
+    size_t getCurrentIndex() const;                     // return 0-based position of iterator in list
+    void moveToIndex(size_t index);                     // moves iterator to index in list
+    const Type& getValue() const;                       // get the value in the list at the iterator
 };
 
 template<typename Type>
-MiniDB<Type>::MiniDB() {
+MiniDB<Type>::MiniDB() {                                // sets the iterator to beginning of list
 
     currPos = db_store.begin();
 }
@@ -47,35 +47,29 @@ size_t MiniDB<Type>::size() const {
 }
 
 template<typename Type>
-void MiniDB<Type>::insert(const Type &item) {
+void MiniDB<Type>::insert(const Type &item) {           // insert value at iterator
 
-//    currPos++;
-//    if(this->size() == 0)
-//        db_store.insert(currPos++, item);
-//    else
         db_store.insert(currPos, item);
-        currPos--;
-//
-//    for(typename std::list<Type>::iterator a {db_store.begin()}; a != db_store.end(); a++) {
-//        std::cout<< *a << std::endl;
-//    }
-//    std::cout<< std::endl;
+        currPos--;                                      // keep pointing at last inserted item
 }
 
 template<typename Type>
-void MiniDB<Type>::append(const Type &item) {
+void MiniDB<Type>::append(const Type &item) {           // insert value at end of list
 
     db_store.push_back(item);
     currPos = db_store.end();
-    --currPos;
+    --currPos;                                          // keep iterator pointing at last value
 }
 
 template<typename Type>
 void MiniDB<Type>::prev() {
 
-    if(currPos != db_store.begin()) {
+    if(currPos != db_store.begin()) {                   // if iterator at beginning, throw error, else move left
+
         --currPos;
+
     } else {
+
         throw std::logic_error("Iterator already at beginning of DB or DB empty");
     }
 }
@@ -83,9 +77,12 @@ void MiniDB<Type>::prev() {
 template<typename Type>
 void MiniDB<Type>::next() {
 
-    if(currPos != db_store.end()) {
+    if(currPos != db_store.end()) {                     // if iterator at end, throw error, else move right
+
         ++currPos;
+
     } else {
+
         throw std::logic_error("Iterator already at end or DB or DB empty");
     }
 }
@@ -93,11 +90,12 @@ void MiniDB<Type>::next() {
 template<typename Type>
 Type MiniDB<Type>::remove() {
 
-    if(db_store.size() != 0) {
-
+    if(db_store.size() != 0) {                              // erase value at iterator. If this was last value, iterator
+                                                            // will point to list.end(), so --iterator
         currPos = db_store.erase(currPos);
         currPos = currPos == db_store.end() ? --currPos : currPos;
-    } else {
+
+    } else {                                                // if list empty, throw error
 
         throw std::logic_error("DB empty");
     }
@@ -133,8 +131,9 @@ void MiniDB<Type>::moveToLast() {
 }
 
 template<typename Type>
-size_t MiniDB<Type>::getCurrentIndex() const {
-
+size_t MiniDB<Type>::getCurrentIndex() const {              // get current iterator index. Uses a const_iterator (as
+                                                            // function is const) and sets it to start of list.
+                                                            // increments iterator and index until currentPos iterator reached
     int index = 0;
 
     typename std::list<Type>::const_iterator begin{db_store.begin()};
@@ -146,6 +145,7 @@ size_t MiniDB<Type>::getCurrentIndex() const {
             index++;
             begin++;
         }
+
     } else {
 
         throw std::logic_error("DB empty");
@@ -153,24 +153,15 @@ size_t MiniDB<Type>::getCurrentIndex() const {
 
 
     return index;
-
-////    if(db_store.size() != 0) {
-////
-////        return distance(begin, currPos);
-//
-//    } else {
-//
-//        throw std::logic_error("DB empty");
-//    }
 }
 
 template<typename Type>
-void MiniDB<Type>::moveToIndex(size_t index) {
+void MiniDB<Type>::moveToIndex(size_t index) {          // move iterator to another index
 
     if(db_store.size() != 0) {
 
         currPos = db_store.begin();
-        std::advance(currPos, index -1);//To account for 0-based numbering
+        std::advance(currPos, index -1);                // To account for 0-based numbering
 
     } else {
 
@@ -183,8 +174,7 @@ const Type& MiniDB<Type>::getValue() const {
 
     if(db_store.size() != 0) {
 
-        //std::cout << "returning value" << std::endl << *currPos << std::endl;
-        return *currPos;
+        return *currPos;                                // returns value at iterator
 
     } else {
 
